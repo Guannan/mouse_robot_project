@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import pygame
+from pygame.locals import *
 from motor_servo_ctrl import *   # importing created module from motor/servo control
 
 # main method
@@ -6,7 +8,6 @@ if __name__=="__main__":
 
     # initializing parameters
     GPIO.setwarnings(False)  #disables not at default(input)-pin-setting warnings
-
     GPIO.setmode(GPIO.BCM)
     wheel_tl_pin1 = 4  # wheel top left
     wheel_tl_pin2 = 17  # for backward control
@@ -20,12 +21,16 @@ if __name__=="__main__":
     servo_bot_pin = 8  # servo bottom
     init_wheel_duty_cycle = 50
     init_servo_duty_cycle = 30
+
+    # directions in degrees
     dir_forward = 0
     dir_right = 90
     dir_backward = 180
     dir_left = 270
+
+    # pwm frequency (Hz)
     dc_motor_freq = 50
-    servo_freq = 180  # use to drive SG-90 servo only
+    servo_freq = 180  # use to drive Tower- Pro SG-90 servo only
 
     # gpio pin pwm init (channel numbers, pin1 starting duty cycle, starting direction, pwm frequency)
     wheel_tl = Wheel (wheel_tl_pin1, wheel_tl_pin2, init_wheel_duty_cycle, dir_forward, dc_motor_freq)
@@ -37,32 +42,26 @@ if __name__=="__main__":
 
     mouse_car = Car (wheel_tl,wheel_tr,wheel_bl,wheel_br)
 
-    # performing test servo sweep...
-    # servo_sweep (servo_bottom)
+    # pygame interface used for getting keypresses without the need for 'enter' after each input
+    pygame.init()
+    screen = pygame.display.set_mode((50, 50), 0, 16)
 
-    # i = key_input ()
-    # for s in i:
-    #     if s == sys.stdin:
-    #         str_line = sys.stdin.readline().strip()
-    #         chars = list (str_line)
-    #         for char in chars:
-    #             if char == 'w':
-    #                 print 'forward'
-    #             elif char == 'a':
-    #                 print 'left'
-    #             elif char == 'd':
-    #                 print 'right'
-    #             elif char == 's':
-    #                 print 'back'
-                            
-
-    try:
-        while 1:
-            time.sleep (1)
+    while 1:
+        event = pygame.event.poll()
+        if event.type == QUIT:
+            break
+        elif event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                break
+            elif event.key == K_UP:
+                print 'Up Arrow Pressed'
+            elif event.key == K_DOWN:
+                print 'Down Arrow Pressed'
+            elif event.key == K_LEFT:
+                print 'Left Arrow Pressed'
+            elif event.key == K_RIGHT:
+                print 'Right Arrow Pressed'
             
-    except KeyboardInterrupt:
-        pass
-
     wheel_tl.terminate ()
     wheel_tr.terminate ()
     wheel_bl.terminate ()
