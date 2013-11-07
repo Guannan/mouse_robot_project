@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+from motor_servo_ctrl import *   # importing created module from motor/servo control
 
 # main method
 if __name__=="__main__":
@@ -36,7 +36,7 @@ if __name__=="__main__":
     servo_bottom = Servo (servo_bot_pin, init_servo_duty_cycle, servo_freq)
 
     mouse_car = Car (wheel_tl,wheel_tr,wheel_bl,wheel_br)
-    
+
     # performing test servo sweep...
     # servo_sweep (servo_bottom)
 
