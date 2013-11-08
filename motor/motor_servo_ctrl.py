@@ -56,6 +56,7 @@ class Servo(object):
         self.pwm = GPIO.PWM (self.pin, self.freq)
         self.pwm.start (init_duty_cycle)
 
+    # TODO delete >> unnecessary wrapping
     def set_duty_cycle (self, duty_cycle):
         self.dc = duty_cycle
         self.pwm.ChangeDutyCycle (duty_cycle)
@@ -71,16 +72,23 @@ class Servo(object):
         max_angle = 180.0
         return (duty_cycle / max_dc) * max_angle
 
-    # takes absolute value of degree changes
+    # takes in degree change, either pos or neg
     def deg_to_duty_cycle (self, deg):
         max_dc = 100.0
         max_angle = 180.0
         return (deg / max_angle) * max_dc
 
-    # heading in degrees must be within 0 to 180
-    def follow_object (self, heading_deg):
-        cur_heading = self.get_heading ()
-        self.set_duty_cycle (heading_deg)
+    # degree_shift is the angle between image center and object center (depending on which servo, either horizontal or vertical dist)
+    def shift_by_degree (self, degree_shift):
+        dc_change = deg_to_duty_cycle (degree_shift)
+        new_dc = self.dc + dc_change
+        if (new_dc < 0):
+            self.dc = 0
+        elif (new_dc > 100):
+            self.dc = 100
+        else:
+            self.dc = new_dc
+        self.update_duty_cycle ()
 
     def terminate (self):
         self.pwm.stop ()
@@ -176,9 +184,20 @@ class Pan_Tilt(object):
     def __init__(self, pan_servo, tilt_servo):
         self.pan_servo = pan_servo
         self.tilt_servo = tilt_servo
-        self.cur_pan_deg = 0
-        self.cur_tilt_deg = 0
-    def 
+    
+    def pan_change (self, deg_change):
+        self.pan_servo.shift_by_degree (deg_change)
+
+    def tilt_change (self, deg_change):
+        self.tilt_servo.shift_by_degree (deg_change)
+
+    def reset_pan_servo (self):
+        self.pan_servo.dc = 50
+        self.pan_servo.update_duty_cycle ()  # assuming initial position
+
+    def reset_tilt_servo (self):
+        self.tilt_servo.dc = 50
+        self.tilt_servo.update_duty_cycle ()
 
 def servo_sweep (servo_obj):
     my_dc = servo_obj.get_duty_cycle ()
