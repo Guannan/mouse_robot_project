@@ -61,8 +61,26 @@ class Servo(object):
         self.pwm.ChangeDutyCycle (duty_cycle)
         time.sleep (0.1)
 
-    def get_duty_cycle (self):
-        return self.dc
+    def update_duty_cycle (self):
+        self.pwm.ChangeDutyCycle (self.dc)
+        time.sleep (0.1)
+
+    # converts pwm duty cycle value to an angle 0 - 180 of servo horn
+    def get_heading (self, duty_cycle):
+        max_dc = 100.0
+        max_angle = 180.0
+        return (duty_cycle / max_dc) * max_angle
+
+    # takes absolute value of degree changes
+    def deg_to_duty_cycle (self, deg):
+        max_dc = 100.0
+        max_angle = 180.0
+        return (deg / max_angle) * max_dc
+
+    # heading in degrees must be within 0 to 180
+    def follow_object (self, heading_deg):
+        cur_heading = self.get_heading ()
+        self.set_duty_cycle (heading_deg)
 
     def terminate (self):
         self.pwm.stop ()
@@ -154,6 +172,14 @@ class Car(object):
 #     i,o,e = select.select([sys.stdin],[],[],10)
 #     return i
 
+class Pan_Tilt(object):
+    def __init__(self, pan_servo, tilt_servo):
+        self.pan_servo = pan_servo
+        self.tilt_servo = tilt_servo
+        self.cur_pan_deg = 0
+        self.cur_tilt_deg = 0
+    def 
+
 def servo_sweep (servo_obj):
     my_dc = servo_obj.get_duty_cycle ()
     try:
@@ -164,6 +190,7 @@ def servo_sweep (servo_obj):
 
             time.sleep (0.1)
             # print my_dc
-            servo_obj.set_duty_cycle (my_dc)
+            servo_obj.dc = my_dc
     except KeyboardInterrupt:
         pass
+
