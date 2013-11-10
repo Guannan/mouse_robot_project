@@ -8,12 +8,13 @@ myDisplay = Display(resolution=(320, 240))
 
 while not myDisplay.isDone():
 	frame = myCamera.getImage()
-	faces = frame.findHaarFeatures('face')
+	frame_flipud = frame.rotate(180)
+	faces = frame_flipud.findHaarFeatures('face')
 	if faces:
 		for face in faces:
 			print "Face at: " + str(face.coordinates())
 	else:
 		print "No faces detected."
-	frame.save(myDisplay)
+	frame_flipud.save(myDisplay)
 	sleep(1)
 

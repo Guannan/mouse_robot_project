@@ -8,5 +8,6 @@ while True:
     # Get Image from camera
     img = cam.getImage()
     # Show the image
-    img.show()
+    # img.show()
+    img.rotate(180).show()
 
