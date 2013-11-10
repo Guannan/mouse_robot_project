@@ -80,7 +80,7 @@ class Servo(object):
 
     # degree_shift is the angle between image center and object center (depending on which servo, either horizontal or vertical dist)
     def shift_by_degree (self, degree_shift):
-        dc_change = deg_to_duty_cycle (degree_shift)
+        dc_change = self.deg_to_duty_cycle (degree_shift)
         new_dc = self.dc + dc_change
         if (new_dc < 0):
             self.dc = 0

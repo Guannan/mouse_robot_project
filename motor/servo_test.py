@@ -2,6 +2,7 @@
 import pygame
 from pygame.locals import *
 from motor_servo_ctrl import *   # importing created module from motor/servo control
+import time
 
 # main method
 if __name__=="__main__":
@@ -34,16 +35,16 @@ if __name__=="__main__":
                 break
             elif event.key == K_UP:
                 print 'Up Arrow Pressed'
-                pan_tilt_control.tilt_change (20)
+                pan_tilt_control.tilt_change (5)
             elif event.key == K_DOWN:
                 print 'Down Arrow Pressed'
-                pan_tilt_control.tilt_change (-20)
+                pan_tilt_control.tilt_change (-5)
             elif event.key == K_LEFT:
                 print 'Left Arrow Pressed'
-                pan_tilt_control.pan_change (-20)
+                pan_tilt_control.pan_change (-3)
             elif event.key == K_RIGHT:
                 print 'Right Arrow Pressed'
-                pan_tilt_control.pan_change (20)
+                pan_tilt_control.pan_change (3)
 
     servo_tilt.terminate ()
     servo_pan.terminate ()
