@@ -9,9 +9,10 @@ if __name__=="__main__":
     # initializing parameters
     GPIO.setwarnings(False)  #disables not at default(input)-pin-setting warnings
     GPIO.setmode(GPIO.BCM)
-    wheel_tl_pin1 = 4  # wheel top left
-    wheel_tl_pin2 = 17  # for backward control
-    wheel_tr_pin1 = 21  # wheel top right
+    wheel_tl_pin1 = 17  # wheel top left
+    wheel_tl_pin2 = 4  # for backward control
+    # wheel_tr_pin1 = 21  # wheel top right
+    wheel_tr_pin1 = 27  # apparently for R2 RPi, pin 21 is renamed as 27
     wheel_tr_pin2 = 22  # for backward control
     wheel_bl_pin1 = 18  # wheel bottom left
     wheel_bl_pin2 = 23  # for backward control
@@ -19,7 +20,7 @@ if __name__=="__main__":
     wheel_br_pin2 = 25  # for backward control
     servo_top_pin = 7  # servo top
     servo_bot_pin = 8  # servo bottom
-    init_wheel_duty_cycle = 50
+    init_wheel_duty_cycle = 0
     init_servo_duty_cycle = 30
 
     # directions in degrees
@@ -37,10 +38,11 @@ if __name__=="__main__":
     wheel_tr = Wheel (wheel_tr_pin1, wheel_tr_pin2, init_wheel_duty_cycle, dir_forward, dc_motor_freq)
     wheel_bl = Wheel (wheel_bl_pin1, wheel_bl_pin2, init_wheel_duty_cycle, dir_forward, dc_motor_freq)
     wheel_br = Wheel (wheel_br_pin1, wheel_br_pin2, init_wheel_duty_cycle, dir_forward, dc_motor_freq)
-    servo_side = Servo (servo_top_pin, init_servo_duty_cycle, servo_freq)
-    servo_bottom = Servo (servo_bot_pin, init_servo_duty_cycle, servo_freq)
+    # servo_side = Servo (servo_top_pin, init_servo_duty_cycle, servo_freq)
+    # servo_bottom = Servo (servo_bot_pin, init_servo_duty_cycle, servo_freq)
 
     mouse_car = Car (wheel_tl,wheel_tr,wheel_bl,wheel_br)
+    mouse_car.move_forward()
 
     # pygame interface used for getting keypresses without the need for 'enter' after each input
     pygame.init()
@@ -54,18 +56,26 @@ if __name__=="__main__":
             if event.key == K_ESCAPE:
                 break
             elif event.key == K_UP:
+                mouse_car.move_forward ()
+                mouse_car.decelerate ()
                 print 'Up Arrow Pressed'
             elif event.key == K_DOWN:
+                mouse_car.move_backward ()
+                mouse_car.decelerate ()
                 print 'Down Arrow Pressed'
             elif event.key == K_LEFT:
+                mouse_car.move_left ()
+                mouse_car.decelerate ()
                 print 'Left Arrow Pressed'
             elif event.key == K_RIGHT:
+                mouse_car.move_right ()
+                mouse_car.decelerate ()
                 print 'Right Arrow Pressed'
             
     wheel_tl.terminate ()
     wheel_tr.terminate ()
     wheel_bl.terminate ()
     wheel_br.terminate ()
-    servo_side.terminate ()
-    servo_bottom.terminate ()
+    # servo_side.terminate ()
+    # servo_bottom.terminate ()
     GPIO.cleanup()

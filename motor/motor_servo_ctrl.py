@@ -30,14 +30,21 @@ class Wheel(object):
         self.pwm_pin1.stop ()
         self.pwm_pin2.stop ()
 
-    def slow_to_halt (self, pwm_pin, current_duty_cycle):
-        # gradually lowers pwm until 0
-        while (current_duty_cycle > 0):
-            dc_change = round((float(current_duty_cycle) - 0)/2)
-            current_duty_cycle -= dc_change
-            update_duty_cycle (pwm_pin, current_duty_cycle)
+    # gradually lowers pwm until 0, only one while loop taken at a time
+    def slow_to_halt (self):
+        while (self.dc1 > 0):
+            dc_change = round((float(self.dc1) - 0)/2)
+            self.dc1 -= dc_change
+            self.update_duty_cycle ()
             time.sleep (0.7)  #waits 0.7 second
 
+        while (self.dc2 > 0):
+            dc_change = round((float(self.dc2) - 0)/2)
+            self.dc2 -= dc_change
+            self.update_duty_cycle ()
+            time.sleep (0.7)  #waits 0.7 second
+
+    # TODO take out pwm_pin param, only use dc1 or dc2
     def accel_to_speed (self, pwm_pin, current_duty_cycle, final_duty_cycle):
         # gradually speeds up
         while (current_duty_cycle < final_duty_cycle):
@@ -101,11 +108,11 @@ class Car(object):
         self.wheel_br = wheel_br
 
     # hardcoded right now
-    def move_forward ():
-        self.wheel_tl.dc1 = 50
-        self.wheel_tr.dc1 = 50
-        self.wheel_bl.dc1 = 50
-        self.wheel_br.dc1 = 50
+    def move_forward (self):
+        self.wheel_tl.dc1 = 100
+        self.wheel_tr.dc1 = 100
+        self.wheel_bl.dc1 = 100
+        self.wheel_br.dc1 = 100
         self.wheel_tl.dc2 = 0
         self.wheel_tr.dc2 = 0
         self.wheel_bl.dc2 = 0
@@ -120,15 +127,15 @@ class Car(object):
         self.wheel_br.direction = 0
 
     # hardcoded right now
-    def move_back ():
+    def move_backward (self):
         self.wheel_tl.dc1 = 0
         self.wheel_tr.dc1 = 0
         self.wheel_bl.dc1 = 0
         self.wheel_br.dc1 = 0
-        self.wheel_tl.dc2 = 50
-        self.wheel_tr.dc2 = 50
-        self.wheel_bl.dc2 = 50
-        self.wheel_br.dc2 = 50
+        self.wheel_tl.dc2 = 100
+        self.wheel_tr.dc2 = 100
+        self.wheel_bl.dc2 = 100
+        self.wheel_br.dc2 = 100
         self.wheel_tl.update_duty_cycle ()
         self.wheel_tr.update_duty_cycle ()
         self.wheel_bl.update_duty_cycle ()
@@ -139,11 +146,11 @@ class Car(object):
         self.wheel_br.direction = 180
 
     # hardcoded right now
-    def move_left ():
-        self.wheel_tl.dc1 = 30
-        self.wheel_tr.dc1 = 70
-        self.wheel_bl.dc1 = 10
-        self.wheel_br.dc1 = 60
+    def move_left (self):
+        self.wheel_tl.dc1 = 50
+        self.wheel_tr.dc1 = 100
+        self.wheel_bl.dc1 = 30
+        self.wheel_br.dc1 = 100
         self.wheel_tl.dc2 = 0
         self.wheel_tr.dc2 = 0
         self.wheel_bl.dc2 = 0
@@ -158,11 +165,11 @@ class Car(object):
         self.wheel_br.direction = 270
 
     # hardcoded right now
-    def move_right ():
-        self.wheel_tl.dc = 30
-        self.wheel_tr.dc = 70
-        self.wheel_bl.dc = 60
-        self.wheel_br.dc = 10
+    def move_right (self):
+        self.wheel_tl.dc1 = 100
+        self.wheel_tr.dc1 = 50
+        self.wheel_bl.dc1 = 100
+        self.wheel_br.dc1 = 30
         self.wheel_tl.dc2 = 0
         self.wheel_tr.dc2 = 0
         self.wheel_bl.dc2 = 0
@@ -175,6 +182,16 @@ class Car(object):
         self.wheel_tr.direction = 90
         self.wheel_bl.direction = 90
         self.wheel_br.direction = 90
+
+    def decelerate (self):
+        self.wheel_tl.slow_to_halt ()
+        self.wheel_tr.slow_to_halt ()
+        self.wheel_bl.slow_to_halt ()
+        self.wheel_br.slow_to_halt ()
+        self.wheel_tl.direction = -1
+        self.wheel_tr.direction = -1
+        self.wheel_bl.direction = -1
+        self.wheel_br.direction = -1
 
 # def key_input ():
 #     i,o,e = select.select([sys.stdin],[],[],10)
