@@ -35,10 +35,10 @@ if __name__=="__main__":
                 break
             elif event.key == K_UP:
                 print 'Up Arrow Pressed'
-                pan_tilt_control.tilt_change (5)
+                pan_tilt_control.tilt_change (-3)
             elif event.key == K_DOWN:
                 print 'Down Arrow Pressed'
-                pan_tilt_control.tilt_change (-5)
+                pan_tilt_control.tilt_change (3)
             elif event.key == K_LEFT:
                 print 'Left Arrow Pressed'
                 pan_tilt_control.pan_change (-3)
