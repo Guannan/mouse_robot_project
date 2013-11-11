@@ -32,17 +32,20 @@ class Wheel(object):
 
     # gradually lowers pwm until 0, only one while loop taken at a time
     def slow_to_halt (self):
+        time.sleep (1)  #waits 1 second
         while (self.dc1 > 0):
-            dc_change = round((float(self.dc1) - 0)/2)
-            self.dc1 -= dc_change
+            # dc_change = round((float(self.dc1) - 0)/2)
+            # self.dc1 -= dc_change
+            self.dc1 = 0
             self.update_duty_cycle ()
-            time.sleep (0.7)  #waits 0.7 second
+            # time.sleep (0.7)  #waits 0.7 second
 
         while (self.dc2 > 0):
-            dc_change = round((float(self.dc2) - 0)/2)
-            self.dc2 -= dc_change
+            # dc_change = round((float(self.dc2) - 0)/2)
+            # self.dc2 -= dc_change
+            self.dc2 = 0
             self.update_duty_cycle ()
-            time.sleep (0.7)  #waits 0.7 second
+            # time.sleep (0.7)  #waits 0.7 second
 
     # TODO take out pwm_pin param, only use dc1 or dc2
     def accel_to_speed (self, pwm_pin, current_duty_cycle, final_duty_cycle):
