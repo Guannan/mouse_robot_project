@@ -71,7 +71,35 @@ if __name__=="__main__":
                 mouse_car.move_right ()
                 mouse_car.decelerate ()
                 print 'Right Arrow Pressed'
-            
+            elif event.key == K_q:
+                wheel_tl.dc1 = 50
+                wheel_tl.update_duty_cycle ()
+                time.sleep (1)
+                wheel_tl.dc1 = 0
+                wheel_tl.update_duty_cycle ()
+                print 'Moving top left wheel'
+            elif event.key == K_w:
+                wheel_tr.dc1 = 50
+                wheel_tr.update_duty_cycle ()
+                time.sleep (1)
+                wheel_tr.dc1 = 0
+                wheel_tr.update_duty_cycle ()
+                print 'Moving top right wheel'
+            elif event.key == K_a:
+                wheel_bl.dc1 = 50
+                wheel_bl.update_duty_cycle ()
+                time.sleep (1)
+                wheel_bl.dc1 = 0
+                wheel_bl.update_duty_cycle ()
+                print 'Moving bottom left wheel'
+            elif event.key == K_s:
+                wheel_br.dc1 = 50
+                wheel_br.update_duty_cycle ()
+                time.sleep (1)
+                wheel_br.dc1 = 0
+                wheel_br.update_duty_cycle ()
+                print 'Moving bottom right wheel'
+
     wheel_tl.terminate ()
     wheel_tr.terminate ()
     wheel_bl.terminate ()
