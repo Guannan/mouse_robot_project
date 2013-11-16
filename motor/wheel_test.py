@@ -42,13 +42,16 @@ if __name__=="__main__":
     # servo_bottom = Servo (servo_bot_pin, init_servo_duty_cycle, servo_freq)
 
     mouse_car = Car (wheel_tl,wheel_tr,wheel_bl,wheel_br)
-    mouse_car.move_forward()
 
     # pygame interface used for getting keypresses without the need for 'enter' after each input
     pygame.init()
     screen = pygame.display.set_mode((50, 50), 0, 16)
 
     while 1:
+        print 'Top left speed: ' + str(wheel_tl.dc1) + ' ' + str(wheel_tl.dc2)
+        print 'Top right speed: ' + str(wheel_tr.dc1) + ' ' + str(wheel_tr.dc2)
+        print 'Bottom left speed: ' + str(wheel_bl.dc1) + ' ' + str(wheel_bl.dc2)
+        print 'Bottom right speed: ' + str(wheel_br.dc1) + ' ' + str(wheel_br.dc2)
         event = pygame.event.poll()
         if event.type == QUIT:
             break
